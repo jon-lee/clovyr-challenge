@@ -8,7 +8,7 @@
 
   (defconstant TIME_INTERVAL 10000) ; coin unlocks every 10000 blocks
   (defconstant TIME_DURATION 20)    ; coin is open for 20 blocks
-  (defconstant ANSWER HELLO)        ; TODO: have this curried
+  (defconstant ANSWER HELLO)        ; TODO: have this curryed
 
   ; get the place-th letter 
   (defun get_letter (word place)
@@ -42,10 +42,11 @@
 
   ; main control flow
 
-  ; check time lock to ensure we are within the time window
-  list( ASSERT_HEIGHT_RELATIVE TIME_INTERVAL )
+  ; TODO check time lock to ensure we are within the time window
+  ;(list ASSERT_HEIGHT_RELATIVE TIME_INTERVAL )
 
   ; TODO if beyond TIME_INTERVAL+TIME_DURATION, recreate the coin to reset next time relative time interval
+  ;(list ASSERT_HEIGHT_RELATIVE (+ TIME_INTERVAL TIME_DURATION) )
 
   ; check if exact game fee was sent (forcing required amount is foreshadowing solution for a future inner puzzle)
   (if (= amount 10)
