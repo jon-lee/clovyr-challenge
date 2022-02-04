@@ -1,5 +1,7 @@
 # Bamboo Forest Time Gate Puzzle
 
+*Message for Sargonas, I know you're reading this. Still looking for your collab on https://www.chialinks.com* :ghost:
+
 ## The main idea
 Inspired by the movie Shang-Chi is the mythical village of Ta Lo, protected by a sentient and moving Bamboo Forest that opens every 15 years.
 
