@@ -1,0 +1,58 @@
+(mod (guess new_puzhash amount
+    guess            ; guess for the first puzzle
+    new_puzhash      
+    amount           
+    )
+
+  (include condition_codes.clib)
+
+  (defconstant TIME_INTERVAL 10000) ; coin unlocks every 10000 blocks
+  (defconstant TIME_DURATION 20)    ; coin is open for 20 blocks
+  (defconstant ANSWER HELLO)        ; TODO: have this curried
+
+  ; get the place-th letter 
+  (defun get_letter (word place)
+    (substr word place (+ place 1))
+  )
+
+  ; returns O for an exact match, X for not exact match
+  (defun check_letter (guess place)
+    (if (= (get_letter guess place) (get_letter ANSWER place))
+        "O"
+        "X"
+    )
+  )
+
+  ; checks the 5 letter guess with the 5 letter answer.
+  ; create coin on win, raise exception message with hint if wrong
+  ; e.g. answer = HELLO, guess = HOLLA, exception message: "OXOOX"
+  (defun check_guess (guess new_puzhash amount)
+    (if (= guess ANSWER)
+      (list (list CREATE_COIN new_puzhash amount))
+      (x (  concat "O=right X=wrong "
+            (check_letter guess 0) 
+            (check_letter guess 1) 
+            (check_letter guess 2)
+            (check_letter guess 3)
+            (check_letter guess 4)
+         )
+      )
+    )
+  )
+
+  ; main control flow
+
+  ; check time lock to ensure we are within the time window
+  list( ASSERT_HEIGHT_RELATIVE TIME_INTERVAL )
+
+  ; TODO if beyond TIME_INTERVAL+TIME_DURATION, recreate the coin to reset next time relative time interval
+
+  ; check if exact game fee was sent (forcing required amount is foreshadowing solution for a future inner puzzle)
+  (if (= amount 10)
+    (if (not (= (strlen guess) 5))
+        (x "guess must be 5 letters")
+        (check_guess guess new_puzhash amount)
+    )
+    (x "need exactly 10 mojo to play")
+  )
+)
